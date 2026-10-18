@@ -392,9 +392,10 @@ def main():
     with open(os.path.join(args.out, "tvbox_merged.json"), "w", encoding="utf-8") as f:
         json.dump(merged, f, ensure_ascii=False, indent=1)
 
-    # 纯净点播订阅: 仅自验证采集站 + 解析, 无需 jar, 开箱即用
+    # 纯净点播订阅: 自验证采集站 + 解析 + 自家直播, 无需 jar, 一个地址全含开箱即用
     clean = lambda d: {k: v for k, v in d.items() if not k.startswith("_")}
     vod_only = {"sites": [clean(s) for s in all_sites if s.get("_src") == "vod_api"],
+                "lives": [clean(l) for l in all_lives_cfg],
                 "parses": [clean(p) for p in all_parses]}
     with open(os.path.join(args.out, "vod_only.json"), "w", encoding="utf-8") as f:
         json.dump(vod_only, f, ensure_ascii=False, indent=1)

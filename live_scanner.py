@@ -221,7 +221,9 @@ def main():
         for c in valid:
             g = f'{c["country"]}-{c["group"]}'
             if g != last:
-                f.write(f"\n{g},#genre#\n"); last = g
+                if last is not None:
+                    f.write("\n")
+                f.write(f"{g},#genre#\n"); last = g
             f.write(f'{c["name"]},{c["url"]}\n')
 
     # 输出 m3u (带台标, EPG 用 tvg-id 匹配)

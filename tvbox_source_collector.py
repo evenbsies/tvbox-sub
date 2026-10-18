@@ -46,6 +46,9 @@ UPSTREAM_LIVES = [
     ("iptv-api", "https://raw.githubusercontent.com/Guovin/iptv-api/gd/output/result.txt"),
 ]
 
+# 本仓库 jsdelivr 订阅基地址（lives 指向自家每日输出）
+SUB_BASE = "https://cdn.jsdelivr.net/gh/evenbsies/tvbox-sub@main/tvbox_out"
+
 # 点播采集站 (applecms API, type=1)。脚本会逐个验证 ?ac=videolist, 只收录活着的
 VOD_APIS = [
     ("暴风资源", "https://bfzyapi.com/api.php/provide/vod"),
@@ -374,6 +377,14 @@ def main():
         for s in all_sites: s["_check"] = "skipped"
 
     # 6. 输出 (_src/_check 保留: TVBox 会忽略未知字段, 方便追溯来源与质量)
+    # 直播源不用上游的（有 127.0.0.1 这种垃圾），指向自家每日验证的输出
+    _epg = "http://epg.51zmt.top:8000/api/diyp/?ch={name}&date={date}"
+    _base = SUB_BASE.rstrip("/") + "/"
+    all_lives_cfg = [
+        {"name": "每日测活", "type": 0, "url": _base + "live_validated.txt", "epg": _epg},
+        {"name": "全球自扫", "type": 0, "url": _base + "live_global/live_global.txt", "epg": _epg},
+        {"name": "全球自扫(m3u)", "type": 0, "url": _base + "live_global/live_global.m3u", "epg": _epg},
+    ]
     for it in all_parses + all_lives_cfg:
         it.pop("_src", None); it.pop("_ms", None)
     merged = {"spiders": spiders, "sites": all_sites,
@@ -392,7 +403,9 @@ def main():
         last_group = None
         for c in valid_chans:
             if c["group"] != last_group:
-                f.write(f"\n{c['group']},#genre#\n"); last_group = c["group"]
+                if last_group is not None:
+                    f.write("\n")
+                f.write(f"{c['group']},#genre#\n"); last_group = c["group"]
             f.write(f"{c['name']},{c['url']}\n")
 
     with open(os.path.join(args.out, "report.txt"), "w", encoding="utf-8") as f:

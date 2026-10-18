@@ -6,14 +6,15 @@
 
 | 脚本 | 功能 |
 |---|---|
-| `tvbox_source_collector.py` | 聚合公开点播配置(71站/14解析)+4个自验证采集站API+每日直播测活 |
+| `tvbox_source_collector.py` | 聚合公开点播配置+采集站深度健康检查(列表→详情→播放地址测速)+每日直播测活 |
 | `live_scanner.py` | 全球直播自发现：iptv-org 13国索引 → 测活 → 测速分级 → 同频道保留最快3条 |
 
 ## 输出 (`tvbox_out/`)
 
 - `tvbox_merged.json` — 点播/解析/直播合并配置（spider 站所需 jar 见 `spiders` 字段）
 - `live_validated.txt` — 每日测活通过的直播频道
-- `vod_only.json` — 纯净点播订阅：仅4个自验证采集站+解析，无需 jar
+- `vod_only.json` — 纯净点播订阅：采集站按播放测速排序，真死的自动下架，无需 jar
+- `vod_apis.json` — 采集站清单（数据驱动，加新站只改这个文件）
 - `live_global/` — 全球扫描结果：`live_global.txt` / `live_global.m3u`（带台标）/ `scan_report.txt` / `live_history.json`（30天趋势）
 
 ## TVBox 订阅地址

@@ -135,6 +135,84 @@ def parse_m3u(text, src):
 
 # ---------------------------------------------------------------- 过滤 ---
 
+def check_play_url(url):
+    """验证播放地址。返回 (status, kbps): ok / blocked(403防盗链, 不代表真死) / dead。"""
+    try:
+        req = urllib.request.Request(url, headers={**UA, "Range": "bytes=0-2047"})
+        with urllib.request.urlopen(req, timeout=CHECK_TIMEOUT) as r:
+            if r.status not in (200, 206):
+                return "dead", 0
+            if r.read(2048).lstrip().startswith(b"<"):
+                return "dead", 0
+    except urllib.error.HTTPError as e:
+        return ("blocked", 0) if e.code in (401, 403, 429) else ("dead", 0)
+    except Exception:
+        return "dead", 0
+    n, t0, kbps = 0, time.time(), 0
+    try:
+        req = urllib.request.Request(url, headers=UA)
+        with urllib.request.urlopen(req, timeout=CHECK_TIMEOUT) as r:
+            if r.status != 200:
+                return "ok", 0
+            while n < 512 * 1024 and time.time() - t0 < 6:
+                chunk = r.read(65536)
+                if not chunk:
+                    break
+                n += len(chunk)
+        dt = time.time() - t0
+        kbps = int(n / 1024 / dt) if dt > 0 else 0
+    except Exception:
+        pass
+    return "ok", kbps
+
+def check_vod_api(entry):
+    """深度健康检查: 列表接口 -> 抽2部 -> 详情 -> 播放地址分级验证+测速。
+    只 delist 真死的; 403防盗链的保留但降级标注。"""
+    name, api = entry
+    info = {"name": name, "api": api, "verdict": "delist", "total": 0, "kbps": 0, "note": ""}
+    try:
+        base = api.rstrip("/")
+        d = json.loads(fetch(base + "?ac=videolist").decode("utf-8", errors="ignore"))
+        if d.get("code") != 1 or not d.get("list"):
+            info["note"] = "列表接口异常"; return info
+        info["total"] = d.get("total", 0)
+        statuses, kbps_best = [], 0
+        for v in d["list"][:2]:
+            try:
+                d2 = json.loads(fetch(f"{base}?ac=detail&ids={v.get('vod_id')}").decode("utf-8", errors="ignore"))
+                lst = d2.get("list", [])
+                if not lst:
+                    continue
+                play = lst[0].get("vod_play_url", "")
+                url = ""
+                for ep in play.split("$$$")[0].split("#"):
+                    if "$" in ep:
+                        u = ep.split("$", 1)[1].strip()
+                        if u.startswith("http"):
+                            url = u; break
+                if not url:
+                    m = re.search(r"https?://[^\s#$,\"']+", play)
+                    if m:
+                        url = m.group(0)
+                if url:
+                    st, kb = check_play_url(url)
+                    statuses.append(st); kbps_best = max(kbps_best, kb)
+            except Exception:
+                continue
+        if not statuses:
+            info["note"] = "无播放地址"; return info
+        info["kbps"] = kbps_best
+        if "ok" in statuses:
+            info["verdict"] = "ok"; info["note"] = f'{info["total"]}部,播放验证通过,{kbps_best}KB/s'
+        elif "blocked" in statuses:
+            info["verdict"] = "blocked"; info["note"] = f'{info["total"]}部,播放地址防盗链(403)'
+        else:
+            info["note"] = "播放地址不可达"
+        return info
+    except Exception as e:
+        info["note"] = str(e)[:40]
+        return info
+
 def is_ad_junk(name):
     low = name.lower()
     return any(kw.lower() in low for kw in AD_KEYWORDS)
@@ -210,20 +288,31 @@ def main():
         except Exception as e:
             rep.append(f"[config] {name}: 抓取失败 {str(e)[:80]}"); print(rep[-1], flush=True)
 
-    # 1b. 验证采集站 API, 活着的做成 type=1 点播源
-    for name, api in VOD_APIS:
+    # 1b. 采集站清单 (仓库 vod_apis.json 数据驱动, 否则用内置) +
+    #     深度健康检查 (列表->详情->播放地址可达+测速), 挂了的自动下架, 按速度排序
+    vod_cfg = os.path.join(os.path.dirname(os.path.abspath(__file__)), "vod_apis.json")
+    vod_list = VOD_APIS
+    if os.path.exists(vod_cfg):
         try:
-            d = json.loads(fetch(api.rstrip("/") + "?ac=videolist").decode("utf-8", errors="ignore"))
-            if d.get("code") == 1 and d.get("list"):
-                all_sites.append({
-                    "key": f"caiji_{len(all_sites)}", "name": name, "type": 1,
-                    "api": api, "searchable": 1, "quickSearch": 1, "filterable": 1,
-                    "_src": "vod_api", "_check": f'ok({d.get("total", "?")}部)'})
-                rep.append(f"[vod] {name}: 可用 (共 {d.get('total', '?')} 部)")
-            else:
-                rep.append(f"[vod] {name}: 返回异常, 跳过")
+            vod_list = [(x["name"], x["api"]) for x in json.load(open(vod_cfg, encoding="utf-8"))]
+            rep.append(f"[vod] 清单: vod_apis.json ({len(vod_list)} 个)"); print(rep[-1], flush=True)
         except Exception as e:
-            rep.append(f"[vod] {name}: 不可用 {str(e)[:50]}")
+            rep.append(f"[vod] 清单读取失败, 用内置: {str(e)[:50]}"); print(rep[-1], flush=True)
+
+    with cf.ThreadPoolExecutor(max_workers=4) as ex:
+        vod_results = list(ex.map(check_vod_api, vod_list))
+    # 排序: 验证通过按速度, 防盗链的次之, 真死的下架
+    rank = {"ok": 0, "blocked": 1, "delist": 2}
+    vod_results.sort(key=lambda r: (rank[r["verdict"]], -r["kbps"]))
+    for i, r in enumerate(vod_results):
+        if r["verdict"] in ("ok", "blocked"):
+            all_sites.append({
+                "key": f"caiji_{i}", "name": r["name"], "type": 1, "api": r["api"],
+                "searchable": 1, "quickSearch": 1, "filterable": 1,
+                "_src": "vod_api", "_check": r["note"]})
+            rep.append(f"[vod] {r['name']}: {r['note']}")
+        else:
+            rep.append(f"[vod] {r['name']}: 下架 ({r['note']})")
         print(rep[-1], flush=True)
 
     # 2. 抓直播列表
@@ -270,7 +359,7 @@ def main():
 
         http_sites = [s for s in all_sites
                       if isinstance(s.get("api"), str) and s["api"].startswith("http")
-                      and not str(s.get("_check", "")).startswith("ok(")]
+                      and s.get("_src") != "vod_api"]
         print(f"[check] 校验点播 http 接口 ({len(http_sites)} 个) ...", flush=True)
         ok_ids = {id(s) for s in validate_all(http_sites, check_http_api, label="vod")}
         for s in all_sites:

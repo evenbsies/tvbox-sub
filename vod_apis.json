@@ -16,10 +16,6 @@
   "name": "魔都资源"
  },
  {
-  "name": "360资源",
-  "api": "https://360zy.com/api.php/provide/vod"
- },
- {
   "name": "索尼资源",
   "api": "https://suoniapi.com/api.php/provide/vod"
  },
@@ -58,5 +54,60 @@
  {
   "name": "无水印资源",
   "api": "https://api.wsyzy.net/api.php/provide/vod"
+ },
+ {
+  "name": "聚合影视",
+  "api": "https://cj.lziapi.com/api.php/provide/vod",
+  "trusted": true
+ },
+ {
+  "name": "天涯影视",
+  "api": "https://tyyszyapi.com/api.php/provide/vod",
+  "trusted": true
+ },
+ {
+  "name": "非凡影视",
+  "api": "https://ffzy5.tv/api.php/provide/vod",
+  "trusted": true
+ },
+ {
+  "name": "量子影视",
+  "api": "https://lzizy.net/api.php/provide/vod",
+  "trusted": true
+ },
+ {
+  "name": "茅台资源",
+  "api": "https://mtzy.me/api.php/provide/vod",
+  "trusted": true
+ },
+ {
+  "name": "豆瓣资源",
+  "api": "https://dbzy.tv/api.php/provide/vod",
+  "trusted": true
+ },
+ {
+  "name": "最大资源",
+  "api": "https://zuida.xyz/api.php/provide/vod",
+  "trusted": true
+ },
+ {
+  "name": "金鹰资源",
+  "api": "https://jinyingzy.com/api.php/provide/vod",
+  "trusted": true
+ },
+ {
+  "name": "速播资源(zy)",
+  "api": "https://www.subozy.com/api.php/provide/vod",
+  "trusted": true
+ },
+ {
+  "name": "极速资源(js)",
+  "api": "https://jszyapi.com/api.php/provide/vod",
+  "trusted": true
+ },
+ {
+  "name": "飘零资源",
+  "api": "https://p2100.net/api.php/provide/vod",
+  "trusted": true
  }
 ]

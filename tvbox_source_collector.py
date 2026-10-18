@@ -170,8 +170,10 @@ def check_play_url(url):
 
 def check_vod_api(entry):
     """深度健康检查: 列表接口 -> 抽2部 -> 详情 -> 播放地址分级验证+测速。
-    只 delist 真死的; 403防盗链的保留但降级标注。"""
-    name, api = entry
+    只 delist 真死的; 403防盗链的保留但降级标注。
+    trusted 源(用户自家仓库验证过): 列表接口活着就不 delist, 播放不通只降级。"""
+    name, api = entry[0], entry[1]
+    trusted = entry[2] if len(entry) > 2 else False
     info = {"name": name, "api": api, "verdict": "delist", "total": 0, "kbps": 0, "note": ""}
     try:
         base = api.rstrip("/")
@@ -203,6 +205,8 @@ def check_vod_api(entry):
             except Exception:
                 continue
         if not statuses:
+            if trusted:
+                info["verdict"] = "blocked"; info["note"] = f'{info["total"]}部,trusted源播放待用户端验证'; return info
             info["note"] = "无播放地址"; return info
         info["kbps"] = kbps_best
         if "ok" in statuses:
@@ -210,7 +214,10 @@ def check_vod_api(entry):
         elif "blocked" in statuses:
             info["verdict"] = "blocked"; info["note"] = f'{info["total"]}部,播放地址防盗链(403)'
         else:
-            info["note"] = "播放地址不可达"
+            if trusted:
+                info["verdict"] = "blocked"; info["note"] = f'{info["total"]}部,trusted源播放待用户端验证'
+            else:
+                info["note"] = "播放地址不可达"
         return info
     except Exception as e:
         info["note"] = str(e)[:40]
@@ -297,7 +304,7 @@ def main():
     vod_list = VOD_APIS
     if os.path.exists(vod_cfg):
         try:
-            vod_list = [(x["name"], x["api"]) for x in json.load(open(vod_cfg, encoding="utf-8"))]
+            vod_list = [(x["name"], x["api"], x.get("trusted", False)) for x in json.load(open(vod_cfg, encoding="utf-8"))]
             rep.append(f"[vod] 清单: vod_apis.json ({len(vod_list)} 个)"); print(rep[-1], flush=True)
         except Exception as e:
             rep.append(f"[vod] 清单读取失败, 用内置: {str(e)[:50]}"); print(rep[-1], flush=True)

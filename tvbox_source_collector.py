@@ -46,6 +46,14 @@ UPSTREAM_LIVES = [
     ("iptv-api", "https://raw.githubusercontent.com/Guovin/iptv-api/gd/output/result.txt"),
 ]
 
+# 点播采集站 (applecms API, type=1)。脚本会逐个验证 ?ac=videolist, 只收录活着的
+VOD_APIS = [
+    ("暴风资源", "https://bfzyapi.com/api.php/provide/vod"),
+    ("ikun资源", "https://ikunzyapi.com/api.php/provide/vod/from/ikm3u8/"),
+    ("无尽资源", "https://api.wujinapi.com/api.php/provide/vod/from/wjm3u8/at/json"),
+    ("魔都资源", "https://caiji.moduapi.cc/api.php/provide/vod/at/json"),
+]
+
 # 名称关键词黑名单: 命中则丢弃 (bc/博彩/色情/跑马灯广告源多用这类名字, 可自行增删)
 AD_KEYWORDS = [
     "博彩", "菠菜", "棋牌", "彩票", "赌场", "娱乐城", "体育投注", "真人视讯",
@@ -202,6 +210,22 @@ def main():
         except Exception as e:
             rep.append(f"[config] {name}: 抓取失败 {str(e)[:80]}"); print(rep[-1], flush=True)
 
+    # 1b. 验证采集站 API, 活着的做成 type=1 点播源
+    for name, api in VOD_APIS:
+        try:
+            d = json.loads(fetch(api.rstrip("/") + "?ac=videolist").decode("utf-8", errors="ignore"))
+            if d.get("code") == 1 and d.get("list"):
+                all_sites.append({
+                    "key": f"caiji_{len(all_sites)}", "name": name, "type": 1,
+                    "api": api, "searchable": 1, "quickSearch": 1, "filterable": 1,
+                    "_src": "vod_api", "_check": f'ok({d.get("total", "?")}部)'})
+                rep.append(f"[vod] {name}: 可用 (共 {d.get('total', '?')} 部)")
+            else:
+                rep.append(f"[vod] {name}: 返回异常, 跳过")
+        except Exception as e:
+            rep.append(f"[vod] {name}: 不可用 {str(e)[:50]}")
+        print(rep[-1], flush=True)
+
     # 2. 抓直播列表
     all_chans = []
     for name, url in UPSTREAM_LIVES:
@@ -244,7 +268,9 @@ def main():
         valid_chans = validate_all(all_chans, check_stream, args.live_limit, "live")
         rep.append(f"[check] 直播可达: {len(valid_chans)}/{len(all_chans)}"); print(rep[-1], flush=True)
 
-        http_sites = [s for s in all_sites if isinstance(s.get("api"), str) and s["api"].startswith("http")]
+        http_sites = [s for s in all_sites
+                      if isinstance(s.get("api"), str) and s["api"].startswith("http")
+                      and not str(s.get("_check", "")).startswith("ok(")]
         print(f"[check] 校验点播 http 接口 ({len(http_sites)} 个) ...", flush=True)
         ok_ids = {id(s) for s in validate_all(http_sites, check_http_api, label="vod")}
         for s in all_sites:

@@ -18,8 +18,11 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: 抓取并校验
+      - name: 抓取订阅源并校验
         run: python3 tvbox_source_collector.py --out ./tvbox_out
+
+      - name: 全球直播源自发现扫描
+        run: python3 live_scanner.py --out ./tvbox_out/live_global
 
       - name: 提交更新
         run: |

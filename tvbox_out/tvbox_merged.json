@@ -1039,7 +1039,7 @@
    "_check": "unvalidated-spider"
   },
   {
-   "key": "caiji_72",
+   "key": "caiji_0",
    "name": "暴风资源",
    "type": 1,
    "api": "https://bfzyapi.com/api.php/provide/vod",
@@ -1050,7 +1050,18 @@
    "_check": "fail"
   },
   {
-   "key": "caiji_73",
+   "key": "caiji_1",
+   "name": "魔都资源",
+   "type": 1,
+   "api": "https://caiji.moduapi.cc/api.php/provide/vod/at/json",
+   "searchable": 1,
+   "quickSearch": 1,
+   "filterable": 1,
+   "_src": "vod_api",
+   "_check": "fail"
+  },
+  {
+   "key": "caiji_2",
    "name": "ikun资源",
    "type": 1,
    "api": "https://ikunzyapi.com/api.php/provide/vod/from/ikm3u8/",
@@ -1061,21 +1072,10 @@
    "_check": "fail"
   },
   {
-   "key": "caiji_74",
+   "key": "caiji_3",
    "name": "无尽资源",
    "type": 1,
    "api": "https://api.wujinapi.com/api.php/provide/vod/from/wjm3u8/at/json",
-   "searchable": 1,
-   "quickSearch": 1,
-   "filterable": 1,
-   "_src": "vod_api",
-   "_check": "fail"
-  },
-  {
-   "key": "caiji_75",
-   "name": "魔都资源",
-   "type": 1,
-   "api": "https://caiji.moduapi.cc/api.php/provide/vod/at/json",
    "searchable": 1,
    "quickSearch": 1,
    "filterable": 1,
@@ -1319,37 +1319,21 @@
  ],
  "lives": [
   {
-   "name": "牛播一(新版影视仓/ok影视)",
+   "name": "每日测活",
    "type": 0,
-   "url": "http://127.0.0.1:9978/proxy?do=饭太硬&type=liveList",
-   "playerType": 1,
-   "epg": "http://epg.51zmt.top:8000/api/diyp/?ch={name}&date={date}",
-   "logo": "https://live.fanmingming.com/tv/{name}.png"
+   "url": "https://cdn.jsdelivr.net/gh/evenbsies/tvbox-sub@main/tvbox_out/live_validated.txt",
+   "epg": "http://epg.51zmt.top:8000/api/diyp/?ch={name}&date={date}"
   },
   {
-   "name": "IPV4",
+   "name": "全球自扫",
    "type": 0,
-   "url": "https://ghp.ci/raw.githubusercontent.com/MemoryCollection/IPTV/refs/heads/main/itvlist.txt",
-   "playerType": 1,
-   "logo": "https://live.fanmingming.com/tv/{name}.png"
+   "url": "https://cdn.jsdelivr.net/gh/evenbsies/tvbox-sub@main/tvbox_out/live_global/live_global.txt",
+   "epg": "http://epg.51zmt.top:8000/api/diyp/?ch={name}&date={date}"
   },
   {
-   "name": "IPV6①",
+   "name": "全球自扫(m3u)",
    "type": 0,
-   "url": "https://ghp.ci/raw.githubusercontent.com/fanmingming/live/refs/heads/main/tv/m3u/ipv6.m3u",
-   "playerType": 1
-  },
-  {
-   "name": "IPV6②",
-   "type": 0,
-   "url": "https://ghp.ci/raw.githubusercontent.com/wwb521/live/refs/heads/main/tv.m3u",
-   "playerType": 1,
-   "logo": "https://live.fanmingming.com/tv/{name}.png"
-  },
-  {
-   "name": "直播",
-   "type": 0,
-   "url": "http://home.jundie.top:81/Cat/tv/live.txt",
+   "url": "https://cdn.jsdelivr.net/gh/evenbsies/tvbox-sub@main/tvbox_out/live_global/live_global.m3u",
    "epg": "http://epg.51zmt.top:8000/api/diyp/?ch={name}&date={date}"
   }
  ]

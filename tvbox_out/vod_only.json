@@ -1,7 +1,7 @@
 {
  "sites": [
   {
-   "key": "caiji_72",
+   "key": "caiji_0",
    "name": "暴风资源",
    "type": 1,
    "api": "https://bfzyapi.com/api.php/provide/vod",
@@ -10,7 +10,16 @@
    "filterable": 1
   },
   {
-   "key": "caiji_73",
+   "key": "caiji_1",
+   "name": "魔都资源",
+   "type": 1,
+   "api": "https://caiji.moduapi.cc/api.php/provide/vod/at/json",
+   "searchable": 1,
+   "quickSearch": 1,
+   "filterable": 1
+  },
+  {
+   "key": "caiji_2",
    "name": "ikun资源",
    "type": 1,
    "api": "https://ikunzyapi.com/api.php/provide/vod/from/ikm3u8/",
@@ -19,19 +28,10 @@
    "filterable": 1
   },
   {
-   "key": "caiji_74",
+   "key": "caiji_3",
    "name": "无尽资源",
    "type": 1,
    "api": "https://api.wujinapi.com/api.php/provide/vod/from/wjm3u8/at/json",
-   "searchable": 1,
-   "quickSearch": 1,
-   "filterable": 1
-  },
-  {
-   "key": "caiji_75",
-   "name": "魔都资源",
-   "type": 1,
-   "api": "https://caiji.moduapi.cc/api.php/provide/vod/at/json",
    "searchable": 1,
    "quickSearch": 1,
    "filterable": 1

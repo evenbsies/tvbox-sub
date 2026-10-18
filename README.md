@@ -38,11 +38,17 @@ TVBox 直播设置 → EPG 地址填：
 http://epg.51zmt.top:8000/api/diyp/?ch={name}&date={date}
 ```
 
+## 自维护 drpy 规则
+
+`drpy/` 目录：规则模板 + 校验器 + 示例规则，详见 `drpy/README.md`。
+每日任务自动校验所有规则，报告在 `tvbox_out/drpy_report.txt`。
+
 ## 本地手动跑
 
 ```bash
 python3 tvbox_source_collector.py --out ./tvbox_out
 python3 live_scanner.py --out ./tvbox_out/live_global
+python3 drpy/validate_drpy.py
 # 只扫指定国家: python3 live_scanner.py --countries cn hk tw
 ```
 

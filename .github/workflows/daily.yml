@@ -24,6 +24,9 @@ jobs:
       - name: 全球直播源自发现扫描
         run: python3 live_scanner.py --out ./tvbox_out/live_global
 
+      - name: 校验自维护 drpy 规则
+        run: python3 drpy/validate_drpy.py --report ./tvbox_out/drpy_report.txt || true
+
       - name: 提交更新
         run: |
           git config user.name "tvbox-bot"

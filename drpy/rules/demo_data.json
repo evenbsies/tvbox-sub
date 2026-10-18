@@ -1,0 +1,28 @@
+{
+  "list": [
+    {
+      "vod_id": "demo001",
+      "vod_name": "示例影片·钢铁之泪",
+      "vod_pic": "https://picsum.photos/seed/tvboxdemo1/300/400",
+      "vod_remarks": "示例/HD",
+      "vod_content": "自维护 drpy 规则演示条目，播放地址为公开测试流。",
+      "vod_play_url": "第01集$https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"
+    },
+    {
+      "vod_id": "demo002",
+      "vod_name": "示例影片·测试流二",
+      "vod_pic": "https://picsum.photos/seed/tvboxdemo2/300/400",
+      "vod_remarks": "示例/HD",
+      "vod_content": "自维护 drpy 规则演示条目，播放地址为公开测试流。",
+      "vod_play_url": "第01集$https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8#第02集$https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"
+    },
+    {
+      "vod_id": "demo003",
+      "vod_name": "示例剧集·三集连播",
+      "vod_pic": "https://picsum.photos/seed/tvboxdemo3/300/400",
+      "vod_remarks": "示例/3集",
+      "vod_content": "自维护 drpy 规则演示条目，多剧集格式演示。",
+      "vod_play_url": "第01集$https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8#第02集$https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8#第03集$https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"
+    }
+  ]
+}

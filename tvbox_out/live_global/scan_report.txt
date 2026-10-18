@@ -12,8 +12,8 @@
 [de] 拉取 289 个
 [fr] 拉取 214 个
 [dedup] 去重后 2860 个
-[check] 可用 2169/2860
-[lines] 同频道保留最快3条 -> 2169 条
-[trend] vs 2026-10-18: 新增 24 条, 失效 4 条
+[check] 可用 2125/2860
+[lines] 同频道保留最快3条 -> 2125 条
+[trend] vs 2026-10-18: 新增 21 条, 失效 65 条
 
 EPG: http://epg.51zmt.top:8000/api/diyp/?ch={name}&date={date}

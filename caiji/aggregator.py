@@ -39,6 +39,19 @@ def norm_name(n):
     return n.strip()
 
 
+# 4K 识别：只认独立词（避免 URL hash 误杀），播放地址只看剧集标签（$ 前）
+PAT_4K = re.compile(r'(?:^|[^a-z0-9])4k(?:[^a-z0-9]|$)|2160\s?[pi]?|(?:^|[^a-z0-9])uhd(?:[^a-z0-9]|$)', re.I)
+
+def is_4k_item(name, remarks, play_url=""):
+    if PAT_4K.search((name or "") + "|" + (remarks or "")):
+        return 1
+    for ep in (play_url or "").split("$$$")[0].split("#"):
+        label = ep.split("$")[0] if "$" in ep else ""
+        if PAT_4K.search(label):
+            return 1
+    return 0
+
+
 def init_db(path):
     con = sqlite3.connect(path)
     con.execute("PRAGMA journal_mode=WAL")
@@ -46,7 +59,7 @@ def init_db(path):
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL, norm TEXT NOT NULL, year TEXT DEFAULT '',
         pic TEXT DEFAULT '', remarks TEXT DEFAULT '', type_name TEXT DEFAULT '',
-        content TEXT DEFAULT '', updated_at INTEGER DEFAULT 0,
+        content TEXT DEFAULT '', updated_at INTEGER DEFAULT 0, is_4k INTEGER DEFAULT 0,
         UNIQUE(norm, year))""")
     con.execute("""CREATE TABLE IF NOT EXISTS plays(
         vod_id INTEGER NOT NULL, source TEXT NOT NULL,
@@ -54,7 +67,8 @@ def init_db(path):
         PRIMARY KEY (vod_id, source))""")
     con.execute("""CREATE TABLE IF NOT EXISTS sources(
         name TEXT PRIMARY KEY, api TEXT, total INTEGER DEFAULT 0,
-        kbps INTEGER DEFAULT 0, last_sync INTEGER DEFAULT 0, note TEXT DEFAULT '')""")
+        kbps INTEGER DEFAULT 0, last_sync INTEGER DEFAULT 0, note TEXT DEFAULT '',
+        tags TEXT DEFAULT '')""")
     con.execute("CREATE INDEX IF NOT EXISTS idx_vods_norm ON vods(norm)")
     con.execute("CREATE INDEX IF NOT EXISTS idx_vods_name ON vods(name)")
     con.commit()
@@ -144,13 +158,14 @@ def sync_source(con, name, api, incremental, max_pages, workers):
         norm = norm_name(nm)
         play_url, dcontent = details.get(it.get("vod_id"), ("", ""))
         content = dcontent or (it.get("vod_content", "") or "")[:500]
+        mark4k = is_4k_item(nm, it.get("vod_remarks", ""), play_url)
         cur = con.execute("SELECT id FROM vods WHERE norm=? AND year=?", (norm, year)).fetchone()
         if cur:
             vid = cur[0]
             con.execute(
-                "UPDATE vods SET pic=?,remarks=?,type_name=?,content=?,updated_at=? WHERE id=?",
+                "UPDATE vods SET pic=?,remarks=?,type_name=?,content=?,updated_at=?,is_4k=? WHERE id=?",
                 (it.get("vod_pic", ""), it.get("vod_remarks", ""), it.get("type_name", ""),
-                 content, now, vid))
+                 content, now, mark4k, vid))
             updated += 1
         else:
             cur = con.execute(
@@ -186,8 +201,8 @@ def main():
         t0 = time.time()
         kbps = measure_kbps(api)
         added, updated, note = sync_source(con, name, api, not args.full, args.max_pages, args.workers)
-        con.execute("INSERT OR REPLACE INTO sources(name,api,kbps,last_sync,note) VALUES(?,?,?,?,?)",
-                    (name, api, kbps, int(time.time()), note))
+        con.execute("INSERT OR REPLACE INTO sources(name,api,kbps,last_sync,note,tags) VALUES(?,?,?,?,?,?)",
+                    (name, api, kbps, int(time.time()), note, ",".join(x.get("tags", []))))
         con.commit()
         print("[sync] " + name + ": 新增" + str(added) + " 更新" + str(updated) +
               " 测速" + str(kbps) + "KB/s " + note + " 用时" + str(int(time.time() - t0)) + "s", flush=True)

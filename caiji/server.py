@@ -55,11 +55,14 @@ def list_vods(pg, wd, t):
     con = get_db()
     where, args = [], []
     if wd:
-        where.append("name LIKE ? ESCAPE '\\'")
-        args.append("%" + like_escape(wd) + "%")
-    if t:
+        where.append("(name LIKE ? ESCAPE '\\' OR remarks LIKE ? ESCAPE '\\')")
+        args += ["%" + like_escape(wd) + "%"] * 2
+    if t == "4k":
+        where.append("is_4k=1")
+    elif t:
         where.append("type_name LIKE ? ESCAPE '\\'")
-        args.append("%" + like_escape(t) + "%")
+        if t != "4k":
+            args.append("%" + like_escape(t) + "%")
     w = ("WHERE " + " AND ".join(where)) if where else ""
     total = con.execute(f"SELECT COUNT(*) c FROM vods {w}", args).fetchone()["c"]
     pagecount = max(1, (total + PAGE_SIZE - 1) // PAGE_SIZE)

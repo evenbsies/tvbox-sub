@@ -30,6 +30,10 @@
 国内建议把 `raw.githubusercontent.com/evenbsies/<repo>/main` 换成
 `cdn.jsdelivr.net/gh/evenbsies/<repo>@main`。
 
+## 搭配订阅
+
+- 南风（加密订阅，影视仓可直接加载）：`https://gh-proxy.com/https://raw.githubusercontent.com/yoursmile66/TVBox/refs/heads/main/XC.json`
+
 ## EPG 节目单
 
 TVBox 直播设置 → EPG 地址填：

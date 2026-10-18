@@ -1,0 +1,29 @@
+name: 每日抓取 TVBox 订阅源
+
+on:
+  schedule:
+    # 每天北京时间 06:00 运行 (UTC 22:00)
+    - cron: '0 22 * * *'
+  workflow_dispatch:  # 允许手动点一下立即跑
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: 抓取并校验
+        run: python3 tvbox_source_collector.py --out ./tvbox_out
+
+      - name: 提交更新
+        run: |
+          git config user.name "tvbox-bot"
+          git config user.email "tvbox-bot@users.noreply.github.com"
+          git add tvbox_out/
+          git diff --cached --quiet || (git commit -m "daily update $(date +%F)" && git push)

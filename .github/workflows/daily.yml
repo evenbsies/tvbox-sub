@@ -24,6 +24,14 @@ jobs:
       - name: 全球直播源自发现扫描
         run: python3 live_scanner.py --out ./tvbox_out/live_global
 
+      - name: 合并直播源(每日测活+全球自扫)
+        run: python3 -c "
+v = open('./tvbox_out/live_validated.txt', encoding='utf-8').read().rstrip(chr(10)) + chr(10)
+g = open('./tvbox_out/live_global/live_global.txt', encoding='utf-8').read().lstrip(chr(10))
+open('./tvbox_out/live_all.txt', 'w', encoding='utf-8').write(chr(10) + v + chr(10) + g)
+print('live_all.txt 已生成')
+"
+
       - name: 校验自维护 drpy 规则
         run: python3 drpy/validate_drpy.py --report ./tvbox_out/drpy_report.txt || true
 

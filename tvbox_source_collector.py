@@ -381,9 +381,7 @@ def main():
     _epg = "http://epg.51zmt.top:8000/api/diyp/?ch={name}&date={date}"
     _base = SUB_BASE.rstrip("/") + "/"
     all_lives_cfg = [
-        {"name": "每日测活", "type": 0, "url": _base + "live_validated.txt", "epg": _epg},
-        {"name": "全球自扫", "type": 0, "url": _base + "live_global/live_global.txt", "epg": _epg},
-        {"name": "全球自扫(m3u)", "type": 0, "url": _base + "live_global/live_global.m3u", "epg": _epg},
+        {"name": "直播合集", "type": 0, "url": _base + "live_all.txt", "epg": _epg},
     ]
     for it in all_parses + all_lives_cfg:
         it.pop("_src", None); it.pop("_ms", None)

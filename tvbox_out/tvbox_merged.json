@@ -1040,9 +1040,9 @@
   },
   {
    "key": "caiji_0",
-   "name": "新浪资源",
+   "name": "速播资源",
    "type": 1,
-   "api": "https://api.xinlangapi.com/xinlangapi.php/provide//vod",
+   "api": "https://subocaiji.com/api.php/provide/vod",
    "searchable": 1,
    "quickSearch": 1,
    "filterable": 1,
@@ -1051,9 +1051,9 @@
   },
   {
    "key": "caiji_1",
-   "name": "速播资源",
+   "name": "新浪资源",
    "type": 1,
-   "api": "https://subocaiji.com/api.php/provide/vod",
+   "api": "https://api.xinlangapi.com/xinlangapi.php/provide//vod",
    "searchable": 1,
    "quickSearch": 1,
    "filterable": 1,
@@ -1084,17 +1084,6 @@
   },
   {
    "key": "caiji_4",
-   "name": "光速资源",
-   "type": 1,
-   "api": "https://api.guangsuapi.com/api.php/provide/vod/from/gsm3u8",
-   "searchable": 1,
-   "quickSearch": 1,
-   "filterable": 1,
-   "_src": "vod_api",
-   "_check": "fail"
-  },
-  {
-   "key": "caiji_5",
    "name": "ikun资源",
    "type": 1,
    "api": "https://ikunzyapi.com/api.php/provide/vod/from/ikm3u8/",
@@ -1105,7 +1094,7 @@
    "_check": "fail"
   },
   {
-   "key": "caiji_6",
+   "key": "caiji_5",
    "name": "魔都资源",
    "type": 1,
    "api": "https://caiji.moduapi.cc/api.php/provide/vod/at/json",
@@ -1116,10 +1105,21 @@
    "_check": "fail"
   },
   {
-   "key": "caiji_7",
+   "key": "caiji_6",
    "name": "360资源",
    "type": 1,
    "api": "https://360zy.com/api.php/provide/vod",
+   "searchable": 1,
+   "quickSearch": 1,
+   "filterable": 1,
+   "_src": "vod_api",
+   "_check": "fail"
+  },
+  {
+   "key": "caiji_7",
+   "name": "光速资源",
+   "type": 1,
+   "api": "https://api.guangsuapi.com/api.php/provide/vod/from/gsm3u8",
    "searchable": 1,
    "quickSearch": 1,
    "filterable": 1,
@@ -1440,21 +1440,9 @@
  ],
  "lives": [
   {
-   "name": "每日测活",
+   "name": "直播合集",
    "type": 0,
-   "url": "https://cdn.jsdelivr.net/gh/evenbsies/tvbox-sub@main/tvbox_out/live_validated.txt",
-   "epg": "http://epg.51zmt.top:8000/api/diyp/?ch={name}&date={date}"
-  },
-  {
-   "name": "全球自扫",
-   "type": 0,
-   "url": "https://cdn.jsdelivr.net/gh/evenbsies/tvbox-sub@main/tvbox_out/live_global/live_global.txt",
-   "epg": "http://epg.51zmt.top:8000/api/diyp/?ch={name}&date={date}"
-  },
-  {
-   "name": "全球自扫(m3u)",
-   "type": 0,
-   "url": "https://cdn.jsdelivr.net/gh/evenbsies/tvbox-sub@main/tvbox_out/live_global/live_global.m3u",
+   "url": "https://cdn.jsdelivr.net/gh/evenbsies/tvbox-sub@main/tvbox_out/live_all.txt",
    "epg": "http://epg.51zmt.top:8000/api/diyp/?ch={name}&date={date}"
   }
  ]

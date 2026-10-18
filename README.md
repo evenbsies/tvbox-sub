@@ -43,6 +43,11 @@ http://epg.51zmt.top:8000/api/diyp/?ch={name}&date={date}
 `drpy/` 目录：规则模板 + 校验器 + 示例规则，详见 `drpy/README.md`。
 每日任务自动校验所有规则，报告在 `tvbox_out/drpy_report.txt`。
 
+## 自建采集聚合服务
+
+`caiji/` 目录：聚合 4 采集站 → 去重多线路 → 自有 applecms API，详见 `caiji/README.md`。
+适合部署到自己的 VPS 上，TVBox 里只填一个地址。
+
 ## 本地手动跑
 
 ```bash

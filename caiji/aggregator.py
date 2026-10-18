@@ -2,10 +2,19 @@
 # -*- coding: utf-8 -*-
 """
 自建采集聚合服务 - 同步器
+========================
 从 vod_apis.json 的采集站拉取影片数据，写入本地 SQLite。
 server.py 读取该库，对外提供 applecms 兼容 API。
+
+用法:
+    python3 aggregator.py                      # 增量同步（各站近24小时更新）
+    python3 aggregator.py --full               # 全量回填（分页拉取）
+    python3 aggregator.py --db caiji.db --max-pages 60 --workers 16
+
+只用标准库。详情页并行拉取；多源去重（同名同年合并为多线路）；记录各源测速。
 """
 import argparse
+import concurrent.futures as cf
 import json
 import os
 import re
@@ -32,6 +41,7 @@ def norm_name(n):
 
 def init_db(path):
     con = sqlite3.connect(path)
+    con.execute("PRAGMA journal_mode=WAL")
     con.execute("""CREATE TABLE IF NOT EXISTS vods(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL, norm TEXT NOT NULL, year TEXT DEFAULT '',
@@ -40,7 +50,7 @@ def init_db(path):
         UNIQUE(norm, year))""")
     con.execute("""CREATE TABLE IF NOT EXISTS plays(
         vod_id INTEGER NOT NULL, source TEXT NOT NULL,
-        play_url TEXT DEFAULT '', kbps INTEGER DEFAULT 0,
+        play_url TEXT DEFAULT '', last_check INTEGER DEFAULT 0,
         PRIMARY KEY (vod_id, source))""")
     con.execute("""CREATE TABLE IF NOT EXISTS sources(
         name TEXT PRIMARY KEY, api TEXT, total INTEGER DEFAULT 0,
@@ -84,10 +94,22 @@ def measure_kbps(api):
         return 0
 
 
-def sync_source(con, name, api, incremental, max_pages):
+def fetch_detail(base, vid):
+    """返回 (vid, play_url, content)。"""
+    try:
+        d2 = fetch_json(base + "?ac=detail&ids=" + str(vid))
+        l2 = d2.get("list") or []
+        if l2:
+            return vid, l2[0].get("vod_play_url", ""), (l2[0].get("vod_content", "") or "")[:500]
+    except Exception:
+        pass
+    return vid, "", ""
+
+
+def sync_source(con, name, api, incremental, max_pages, workers):
     base = api.rstrip("/")
     added, updated, total = 0, 0, 0
-    page = 1
+    items, page = [], 1
     while page <= max_pages:
         q = "?ac=videolist&pg=" + str(page) + ("&h=24" if incremental else "")
         try:
@@ -100,41 +122,48 @@ def sync_source(con, name, api, incremental, max_pages):
         if not lst:
             break
         total = d.get("total", total)
-        for it in lst:
-            nm = it.get("vod_name", "")
-            year = str(it.get("vod_year", "") or "")
-            if not nm:
-                continue
-            norm = norm_name(nm)
-            cur = con.execute("SELECT id FROM vods WHERE norm=? AND year=?", (norm, year)).fetchone()
-            if cur:
-                vid = cur[0]
-                con.execute(
-                    "UPDATE vods SET pic=?,remarks=?,type_name=?,content=?,updated_at=? WHERE id=?",
-                    (it.get("vod_pic", ""), it.get("vod_remarks", ""), it.get("type_name", ""),
-                     (it.get("vod_content", "") or "")[:500], int(time.time()), vid))
-                updated += 1
-            else:
-                cur = con.execute(
-                    "INSERT INTO vods(name,norm,year,pic,remarks,type_name,content,updated_at)"
-                    " VALUES(?,?,?,?,?,?,?,?)",
-                    (nm, norm, year, it.get("vod_pic", ""), it.get("vod_remarks", ""),
-                     it.get("type_name", ""), (it.get("vod_content", "") or "")[:500], int(time.time())))
-                vid = cur.lastrowid
-                added += 1
-            try:
-                d2 = fetch_json(base + "?ac=detail&ids=" + str(it.get("vod_id")))
-                l2 = d2.get("list") or []
-                if l2:
-                    con.execute("INSERT OR REPLACE INTO plays(vod_id,source,play_url) VALUES(?,?,?)",
-                                (vid, name, l2[0].get("vod_play_url", "")))
-            except Exception:
-                pass
-        con.commit()
+        items.extend(lst)
         if page >= (d.get("pagecount") or page):
             break
         page += 1
-        time.sleep(0.3)
+    # 详情并行拉取
+    details = {}
+    with cf.ThreadPoolExecutor(max_workers=workers) as ex:
+        futs = {ex.submit(fetch_detail, base, it.get("vod_id")): it
+                for it in items if it.get("vod_id")}
+        for f in cf.as_completed(futs):
+            vid, play_url, content = f.result()
+            details[vid] = (play_url, content)
+    # 入库
+    now = int(time.time())
+    for it in items:
+        nm = it.get("vod_name", "")
+        year = re.sub(r"\D", "", str(it.get("vod_year", "") or ""))[:4]
+        if not nm:
+            continue
+        norm = norm_name(nm)
+        play_url, dcontent = details.get(it.get("vod_id"), ("", ""))
+        content = dcontent or (it.get("vod_content", "") or "")[:500]
+        cur = con.execute("SELECT id FROM vods WHERE norm=? AND year=?", (norm, year)).fetchone()
+        if cur:
+            vid = cur[0]
+            con.execute(
+                "UPDATE vods SET pic=?,remarks=?,type_name=?,content=?,updated_at=? WHERE id=?",
+                (it.get("vod_pic", ""), it.get("vod_remarks", ""), it.get("type_name", ""),
+                 content, now, vid))
+            updated += 1
+        else:
+            cur = con.execute(
+                "INSERT INTO vods(name,norm,year,pic,remarks,type_name,content,updated_at)"
+                " VALUES(?,?,?,?,?,?,?,?)",
+                (nm, norm, year, it.get("vod_pic", ""), it.get("vod_remarks", ""),
+                 it.get("type_name", ""), content, now))
+            vid = cur.lastrowid
+            added += 1
+        if play_url:
+            con.execute("INSERT OR REPLACE INTO plays(vod_id,source,play_url,last_check)"
+                        " VALUES(?,?,?,?)", (vid, name, play_url, now))
+    con.commit()
     return added, updated, "ok(共" + str(total) + "部)"
 
 
@@ -143,6 +172,7 @@ def main():
     ap.add_argument("--db", default=os.path.join(HERE, "caiji.db"))
     ap.add_argument("--full", action="store_true", help="全量回填（默认只同步近24小时更新）")
     ap.add_argument("--max-pages", type=int, default=60, help="每站最多拉多少页（每页20条）")
+    ap.add_argument("--workers", type=int, default=16, help="详情并行数")
     ap.add_argument("--apis", default=os.path.join(HERE, "..", "vod_apis.json"))
     args = ap.parse_args()
 
@@ -153,13 +183,14 @@ def main():
 
     for x in vod_list:
         name, api = x["name"], x["api"]
+        t0 = time.time()
         kbps = measure_kbps(api)
-        added, updated, note = sync_source(con, name, api, not args.full, args.max_pages)
+        added, updated, note = sync_source(con, name, api, not args.full, args.max_pages, args.workers)
         con.execute("INSERT OR REPLACE INTO sources(name,api,kbps,last_sync,note) VALUES(?,?,?,?,?)",
                     (name, api, kbps, int(time.time()), note))
         con.commit()
         print("[sync] " + name + ": 新增" + str(added) + " 更新" + str(updated) +
-              " 测速" + str(kbps) + "KB/s " + note, flush=True)
+              " 测速" + str(kbps) + "KB/s " + note + " 用时" + str(int(time.time() - t0)) + "s", flush=True)
 
     n = con.execute("SELECT COUNT(*) FROM vods").fetchone()[0]
     print("[sync] 完成，库内共 " + str(n) + " 部影片")

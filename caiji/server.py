@@ -20,6 +20,7 @@ TVBox 里当 type=1 站填：{"key":"my_caiji","name":"自建聚合","type":1,
 只用标准库。
 """
 import argparse
+import html
 import json
 import os
 import sqlite3
@@ -37,11 +38,16 @@ def get_db():
     return con
 
 
+def like_escape(s):
+    return s.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_")
+
+
 def vod_row(r):
     return {
         "vod_id": r["id"], "vod_name": r["name"], "vod_pic": r["pic"],
         "vod_remarks": r["remarks"], "vod_year": r["year"],
         "type_name": r["type_name"], "vod_content": r["content"],
+        "vod_time_add": time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(r["updated_at"])),
     }
 
 
@@ -49,11 +55,11 @@ def list_vods(pg, wd, t):
     con = get_db()
     where, args = [], []
     if wd:
-        where.append("(name LIKE ?)")
-        args.append(f"%{wd}%")
+        where.append("name LIKE ? ESCAPE '\\'")
+        args.append("%" + like_escape(wd) + "%")
     if t:
-        where.append("type_name LIKE ?")
-        args.append(f"%{t}%")
+        where.append("type_name LIKE ? ESCAPE '\\'")
+        args.append("%" + like_escape(t) + "%")
     w = ("WHERE " + " AND ".join(where)) if where else ""
     total = con.execute(f"SELECT COUNT(*) c FROM vods {w}", args).fetchone()["c"]
     pagecount = max(1, (total + PAGE_SIZE - 1) // PAGE_SIZE)
@@ -69,21 +75,26 @@ def list_vods(pg, wd, t):
     }
 
 
-def detail(vid):
+def detail(vids):
     con = get_db()
-    r = con.execute("SELECT * FROM vods WHERE id=?", (vid,)).fetchone()
-    if not r:
-        con.close()
-        return {"code": 0, "msg": "未找到"}
-    plays = con.execute(
-        "SELECT p.source,p.play_url,s.kbps FROM plays p"
-        " LEFT JOIN sources s ON s.name=p.source"
-        " WHERE p.vod_id=? AND p.play_url!='' ORDER BY s.kbps DESC", (vid,)).fetchall()
+    ids = [v.strip() for v in str(vids).split(",") if v.strip()][:20]
+    out = []
+    for vid in ids:
+        r = con.execute("SELECT * FROM vods WHERE id=?", (vid,)).fetchone()
+        if not r:
+            continue
+        plays = con.execute(
+            "SELECT p.source,p.play_url,s.kbps FROM plays p"
+            " LEFT JOIN sources s ON s.name=p.source"
+            " WHERE p.vod_id=? AND p.play_url!='' ORDER BY s.kbps DESC", (r["id"],)).fetchall()
+        item = vod_row(r)
+        item["vod_play_from"] = "$$$".join(p["source"] for p in plays)
+        item["vod_play_url"] = "$$$".join(p["play_url"] for p in plays)
+        out.append(item)
     con.close()
-    item = vod_row(r)
-    item["vod_play_from"] = "$$$".join(p["source"] for p in plays)
-    item["vod_play_url"] = "$$$".join(p["play_url"] for p in plays)
-    return {"code": 1, "msg": "数据详情", "list": [item]}
+    if not out:
+        return {"code": 0, "msg": "未找到"}
+    return {"code": 1, "msg": "数据详情", "list": out}
 
 
 def status():
@@ -92,7 +103,8 @@ def status():
     srcs = con.execute("SELECT name,kbps,note,last_sync FROM sources").fetchall()
     con.close()
     rows = "".join(
-        f"<tr><td>{s['name']}</td><td>{s['kbps']}KB/s</td><td>{s['note']}</td>"
+        f"<tr><td>{html.escape(s['name'])}</td><td>{s['kbps']}KB/s</td>"
+        f"<td>{html.escape(s['note'] or '')}</td>"
         f"<td>{time.strftime('%m-%d %H:%M', time.localtime(s['last_sync'])) if s['last_sync'] else '-'}</td></tr>"
         for s in srcs)
     return (f"<html><head><meta charset=utf-8><title>自建采集聚合</title></head><body>"
@@ -119,7 +131,10 @@ class Handler(BaseHTTPRequestHandler):
         ac = (q.get("ac") or [""])[0]
         try:
             if ac == "videolist":
-                pg = int((q.get("pg") or ["1"])[0] or 1)
+                try:
+                    pg = int((q.get("pg") or ["1"])[0] or 1)
+                except ValueError:
+                    pg = 1
                 self._send(json.dumps(list_vods(pg, (q.get("wd") or [""])[0],
                                                (q.get("t") or [""])[0]), ensure_ascii=False))
             elif ac == "detail":

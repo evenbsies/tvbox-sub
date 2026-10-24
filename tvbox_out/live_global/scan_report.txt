@@ -10,10 +10,10 @@
 [kr] 拉取 72 个
 [sg] 拉取 11 个
 [de] 拉取 284 个
-[fr] 拉取 197 个
-[dedup] 去重后 2837 个
-[check] 可用 2158/2837
+[fr] 拉取 195 个
+[dedup] 去重后 2835 个
+[check] 可用 2158/2835
 [lines] 同频道保留最快3条 -> 2158 条
-[trend] vs 2026-10-22: 新增 25 条, 失效 15 条
+[trend] vs 2026-10-23: 新增 11 条, 失效 11 条
 
 EPG: http://epg.51zmt.top:8000/api/diyp/?ch={name}&date={date}

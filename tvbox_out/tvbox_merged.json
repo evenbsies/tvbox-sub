@@ -1073,39 +1073,6 @@
   },
   {
    "key": "caiji_3",
-   "name": "无水印资源",
-   "type": 1,
-   "api": "https://api.wsyzy.net/api.php/provide/vod",
-   "searchable": 1,
-   "quickSearch": 1,
-   "filterable": 1,
-   "_src": "vod_api",
-   "_check": "fail"
-  },
-  {
-   "key": "caiji_4",
-   "name": "玉兔资源",
-   "type": 1,
-   "api": "https://apiyutu.com/api.php/provide/vod/",
-   "searchable": 1,
-   "quickSearch": 1,
-   "filterable": 1,
-   "_src": "vod_api",
-   "_check": "fail"
-  },
-  {
-   "key": "caiji_5",
-   "name": "百花资源",
-   "type": 1,
-   "api": "https://bhziyuan.com/api.php/provide/vod/",
-   "searchable": 1,
-   "quickSearch": 1,
-   "filterable": 1,
-   "_src": "vod_api",
-   "_check": "fail"
-  },
-  {
-   "key": "caiji_6",
    "name": "ikun资源",
    "type": 1,
    "api": "https://ikunzyapi.com/api.php/provide/vod/from/ikm3u8/",
@@ -1116,7 +1083,7 @@
    "_check": "fail"
   },
   {
-   "key": "caiji_7",
+   "key": "caiji_4",
    "name": "魔都资源",
    "type": 1,
    "api": "https://caiji.moduapi.cc/api.php/provide/vod/at/json",
@@ -1127,7 +1094,18 @@
    "_check": "fail"
   },
   {
-   "key": "caiji_8",
+   "key": "caiji_5",
+   "name": "无水印资源",
+   "type": 1,
+   "api": "https://api.wsyzy.net/api.php/provide/vod",
+   "searchable": 1,
+   "quickSearch": 1,
+   "filterable": 1,
+   "_src": "vod_api",
+   "_check": "fail"
+  },
+  {
+   "key": "caiji_6",
    "name": "茅台资源",
    "type": 1,
    "api": "https://mtzy.me/api.php/provide/vod",
@@ -1138,10 +1116,32 @@
    "_check": "fail"
   },
   {
-   "key": "caiji_9",
+   "key": "caiji_7",
    "name": "155资源",
    "type": 1,
    "api": "https://155api.com/api.php/provide/vod/",
+   "searchable": 1,
+   "quickSearch": 1,
+   "filterable": 1,
+   "_src": "vod_api",
+   "_check": "fail"
+  },
+  {
+   "key": "caiji_8",
+   "name": "玉兔资源",
+   "type": 1,
+   "api": "https://apiyutu.com/api.php/provide/vod/",
+   "searchable": 1,
+   "quickSearch": 1,
+   "filterable": 1,
+   "_src": "vod_api",
+   "_check": "fail"
+  },
+  {
+   "key": "caiji_9",
+   "name": "百花资源",
+   "type": 1,
+   "api": "https://bhziyuan.com/api.php/provide/vod/",
    "searchable": 1,
    "quickSearch": 1,
    "filterable": 1,

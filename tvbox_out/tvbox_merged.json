@@ -1040,17 +1040,6 @@
   },
   {
    "key": "caiji_0",
-   "name": "百度资源",
-   "type": 1,
-   "api": "https://api.apibdzy.com/api.php/provide/vod",
-   "searchable": 1,
-   "quickSearch": 1,
-   "filterable": 1,
-   "_src": "vod_api",
-   "_check": "fail"
-  },
-  {
-   "key": "caiji_1",
    "name": "CK资源",
    "type": 1,
    "api": "https://ckzy.me/api.php/provide/vod",
@@ -1061,7 +1050,7 @@
    "_check": "fail"
   },
   {
-   "key": "caiji_2",
+   "key": "caiji_1",
    "name": "光速资源",
    "type": 1,
    "api": "https://api.guangsuapi.com/api.php/provide/vod/from/gsm3u8",
@@ -1072,7 +1061,7 @@
    "_check": "fail"
   },
   {
-   "key": "caiji_3",
+   "key": "caiji_2",
    "name": "暴风资源",
    "type": 1,
    "api": "https://bfzyapi.com/api.php/provide/vod",
@@ -1083,10 +1072,21 @@
    "_check": "fail"
   },
   {
-   "key": "caiji_4",
+   "key": "caiji_3",
    "name": "ikun资源",
    "type": 1,
    "api": "https://ikunzyapi.com/api.php/provide/vod/from/ikm3u8/",
+   "searchable": 1,
+   "quickSearch": 1,
+   "filterable": 1,
+   "_src": "vod_api",
+   "_check": "fail"
+  },
+  {
+   "key": "caiji_4",
+   "name": "无尽资源",
+   "type": 1,
+   "api": "https://api.wujinapi.com/api.php/provide/vod/from/wjm3u8/at/json",
    "searchable": 1,
    "quickSearch": 1,
    "filterable": 1,
@@ -1106,72 +1106,6 @@
   },
   {
    "key": "caiji_6",
-   "name": "无水印资源",
-   "type": 1,
-   "api": "https://api.wsyzy.net/api.php/provide/vod",
-   "searchable": 1,
-   "quickSearch": 1,
-   "filterable": 1,
-   "_src": "vod_api",
-   "_check": "fail"
-  },
-  {
-   "key": "caiji_7",
-   "name": "155资源",
-   "type": 1,
-   "api": "https://155api.com/api.php/provide/vod/",
-   "searchable": 1,
-   "quickSearch": 1,
-   "filterable": 1,
-   "_src": "vod_api",
-   "_check": "fail"
-  },
-  {
-   "key": "caiji_8",
-   "name": "玉兔资源",
-   "type": 1,
-   "api": "https://apiyutu.com/api.php/provide/vod/",
-   "searchable": 1,
-   "quickSearch": 1,
-   "filterable": 1,
-   "_src": "vod_api",
-   "_check": "fail"
-  },
-  {
-   "key": "caiji_9",
-   "name": "百花资源",
-   "type": 1,
-   "api": "https://bhziyuan.com/api.php/provide/vod/",
-   "searchable": 1,
-   "quickSearch": 1,
-   "filterable": 1,
-   "_src": "vod_api",
-   "_check": "fail"
-  },
-  {
-   "key": "caiji_10",
-   "name": "如意资源",
-   "type": 1,
-   "api": "https://cj.rycjapi.com/api.php/provide/vod/",
-   "searchable": 1,
-   "quickSearch": 1,
-   "filterable": 1,
-   "_src": "vod_api",
-   "_check": "fail"
-  },
-  {
-   "key": "caiji_11",
-   "name": "无尽资源",
-   "type": 1,
-   "api": "https://api.wujinapi.com/api.php/provide/vod/from/wjm3u8/at/json",
-   "searchable": 1,
-   "quickSearch": 1,
-   "filterable": 1,
-   "_src": "vod_api",
-   "_check": "fail"
-  },
-  {
-   "key": "caiji_12",
    "name": "索尼资源",
    "type": 1,
    "api": "https://suoniapi.com/api.php/provide/vod",
@@ -1182,29 +1116,7 @@
    "_check": "fail"
   },
   {
-   "key": "caiji_13",
-   "name": "无尽资源(备)",
-   "type": 1,
-   "api": "https://api.wujinapi.net/api.php/provide/vod",
-   "searchable": 1,
-   "quickSearch": 1,
-   "filterable": 1,
-   "_src": "vod_api",
-   "_check": "fail"
-  },
-  {
-   "key": "caiji_14",
-   "name": "电影天堂资源",
-   "type": 1,
-   "api": "http://caiji.dyttzyapi.com/api.php/provide/vod",
-   "searchable": 1,
-   "quickSearch": 1,
-   "filterable": 1,
-   "_src": "vod_api",
-   "_check": "fail"
-  },
-  {
-   "key": "caiji_15",
+   "key": "caiji_7",
    "name": "闪电资源",
    "type": 1,
    "api": "https://sdzyapi.com/api.php/provide/vod",
@@ -1215,10 +1127,10 @@
    "_check": "fail"
   },
   {
-   "key": "caiji_16",
-   "name": "聚合影视",
+   "key": "caiji_8",
+   "name": "无水印资源",
    "type": 1,
-   "api": "https://cj.lziapi.com/api.php/provide/vod",
+   "api": "https://api.wsyzy.net/api.php/provide/vod",
    "searchable": 1,
    "quickSearch": 1,
    "filterable": 1,
@@ -1226,40 +1138,7 @@
    "_check": "fail"
   },
   {
-   "key": "caiji_17",
-   "name": "天涯影视",
-   "type": 1,
-   "api": "https://tyyszyapi.com/api.php/provide/vod",
-   "searchable": 1,
-   "quickSearch": 1,
-   "filterable": 1,
-   "_src": "vod_api",
-   "_check": "fail"
-  },
-  {
-   "key": "caiji_18",
-   "name": "非凡影视",
-   "type": 1,
-   "api": "https://ffzy5.tv/api.php/provide/vod",
-   "searchable": 1,
-   "quickSearch": 1,
-   "filterable": 1,
-   "_src": "vod_api",
-   "_check": "fail"
-  },
-  {
-   "key": "caiji_19",
-   "name": "量子影视",
-   "type": 1,
-   "api": "https://lzizy.net/api.php/provide/vod",
-   "searchable": 1,
-   "quickSearch": 1,
-   "filterable": 1,
-   "_src": "vod_api",
-   "_check": "fail"
-  },
-  {
-   "key": "caiji_20",
+   "key": "caiji_9",
    "name": "最大资源",
    "type": 1,
    "api": "https://zuida.xyz/api.php/provide/vod",
@@ -1270,7 +1149,139 @@
    "_check": "fail"
   },
   {
+   "key": "caiji_10",
+   "name": "155资源",
+   "type": 1,
+   "api": "https://155api.com/api.php/provide/vod/",
+   "searchable": 1,
+   "quickSearch": 1,
+   "filterable": 1,
+   "_src": "vod_api",
+   "_check": "fail"
+  },
+  {
+   "key": "caiji_11",
+   "name": "玉兔资源",
+   "type": 1,
+   "api": "https://apiyutu.com/api.php/provide/vod/",
+   "searchable": 1,
+   "quickSearch": 1,
+   "filterable": 1,
+   "_src": "vod_api",
+   "_check": "fail"
+  },
+  {
+   "key": "caiji_12",
+   "name": "百花资源",
+   "type": 1,
+   "api": "https://bhziyuan.com/api.php/provide/vod/",
+   "searchable": 1,
+   "quickSearch": 1,
+   "filterable": 1,
+   "_src": "vod_api",
+   "_check": "fail"
+  },
+  {
+   "key": "caiji_13",
+   "name": "如意资源",
+   "type": 1,
+   "api": "https://cj.rycjapi.com/api.php/provide/vod/",
+   "searchable": 1,
+   "quickSearch": 1,
+   "filterable": 1,
+   "_src": "vod_api",
+   "_check": "fail"
+  },
+  {
+   "key": "caiji_14",
+   "name": "最大资源",
+   "type": 1,
+   "api": "https://api.zuidapi.com/api.php/provide/vod/",
+   "searchable": 1,
+   "quickSearch": 1,
+   "filterable": 1,
+   "_src": "vod_api",
+   "_check": "fail"
+  },
+  {
+   "key": "caiji_15",
+   "name": "鸭鸭资源",
+   "type": 1,
+   "api": "https://cj.yayazy.net/api.php/provide/vod/",
+   "searchable": 1,
+   "quickSearch": 1,
+   "filterable": 1,
+   "_src": "vod_api",
+   "_check": "fail"
+  },
+  {
+   "key": "caiji_16",
+   "name": "电影天堂资源",
+   "type": 1,
+   "api": "http://caiji.dyttzyapi.com/api.php/provide/vod",
+   "searchable": 1,
+   "quickSearch": 1,
+   "filterable": 1,
+   "_src": "vod_api",
+   "_check": "fail"
+  },
+  {
+   "key": "caiji_17",
+   "name": "百度资源",
+   "type": 1,
+   "api": "https://api.apibdzy.com/api.php/provide/vod",
+   "searchable": 1,
+   "quickSearch": 1,
+   "filterable": 1,
+   "_src": "vod_api",
+   "_check": "fail"
+  },
+  {
+   "key": "caiji_18",
+   "name": "聚合影视",
+   "type": 1,
+   "api": "https://cj.lziapi.com/api.php/provide/vod",
+   "searchable": 1,
+   "quickSearch": 1,
+   "filterable": 1,
+   "_src": "vod_api",
+   "_check": "fail"
+  },
+  {
+   "key": "caiji_19",
+   "name": "天涯影视",
+   "type": 1,
+   "api": "https://tyyszyapi.com/api.php/provide/vod",
+   "searchable": 1,
+   "quickSearch": 1,
+   "filterable": 1,
+   "_src": "vod_api",
+   "_check": "fail"
+  },
+  {
+   "key": "caiji_20",
+   "name": "非凡影视",
+   "type": 1,
+   "api": "https://ffzy5.tv/api.php/provide/vod",
+   "searchable": 1,
+   "quickSearch": 1,
+   "filterable": 1,
+   "_src": "vod_api",
+   "_check": "fail"
+  },
+  {
    "key": "caiji_21",
+   "name": "量子影视",
+   "type": 1,
+   "api": "https://lzizy.net/api.php/provide/vod",
+   "searchable": 1,
+   "quickSearch": 1,
+   "filterable": 1,
+   "_src": "vod_api",
+   "_check": "fail"
+  },
+  {
+   "key": "caiji_22",
    "name": "金鹰资源",
    "type": 1,
    "api": "https://jinyingzy.com/api.php/provide/vod",
@@ -1281,7 +1292,7 @@
    "_check": "fail"
   },
   {
-   "key": "caiji_22",
+   "key": "caiji_23",
    "name": "速播资源(zy)",
    "type": 1,
    "api": "https://www.subozy.com/api.php/provide/vod",
@@ -1292,7 +1303,7 @@
    "_check": "fail"
   },
   {
-   "key": "caiji_23",
+   "key": "caiji_24",
    "name": "极速资源(js)",
    "type": 1,
    "api": "https://jszyapi.com/api.php/provide/vod",
@@ -1303,21 +1314,10 @@
    "_check": "fail"
   },
   {
-   "key": "caiji_24",
+   "key": "caiji_25",
    "name": "U酷资源",
    "type": 1,
    "api": "https://api.ukuapi88.com/api.php/provide/vod/",
-   "searchable": 1,
-   "quickSearch": 1,
-   "filterable": 1,
-   "_src": "vod_api",
-   "_check": "fail"
-  },
-  {
-   "key": "caiji_25",
-   "name": "最大资源",
-   "type": 1,
-   "api": "https://api.zuidapi.com/api.php/provide/vod/",
    "searchable": 1,
    "quickSearch": 1,
    "filterable": 1,

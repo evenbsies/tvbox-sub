@@ -1040,6 +1040,17 @@
   },
   {
    "key": "caiji_0",
+   "name": "光速资源",
+   "type": 1,
+   "api": "https://api.guangsuapi.com/api.php/provide/vod/from/gsm3u8",
+   "searchable": 1,
+   "quickSearch": 1,
+   "filterable": 1,
+   "_src": "vod_api",
+   "_check": "fail"
+  },
+  {
+   "key": "caiji_1",
    "name": "CK资源",
    "type": 1,
    "api": "https://ckzy.me/api.php/provide/vod",
@@ -1050,21 +1061,10 @@
    "_check": "fail"
   },
   {
-   "key": "caiji_1",
+   "key": "caiji_2",
    "name": "暴风资源",
    "type": 1,
    "api": "https://bfzyapi.com/api.php/provide/vod",
-   "searchable": 1,
-   "quickSearch": 1,
-   "filterable": 1,
-   "_src": "vod_api",
-   "_check": "fail"
-  },
-  {
-   "key": "caiji_2",
-   "name": "光速资源",
-   "type": 1,
-   "api": "https://api.guangsuapi.com/api.php/provide/vod/from/gsm3u8",
    "searchable": 1,
    "quickSearch": 1,
    "filterable": 1,

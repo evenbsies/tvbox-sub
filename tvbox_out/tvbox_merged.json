@@ -1040,9 +1040,9 @@
   },
   {
    "key": "caiji_0",
-   "name": "CK资源",
+   "name": "光速资源",
    "type": 1,
-   "api": "https://ckzy.me/api.php/provide/vod",
+   "api": "https://api.guangsuapi.com/api.php/provide/vod/from/gsm3u8",
    "searchable": 1,
    "quickSearch": 1,
    "filterable": 1,
@@ -1051,9 +1051,9 @@
   },
   {
    "key": "caiji_1",
-   "name": "光速资源",
+   "name": "CK资源",
    "type": 1,
-   "api": "https://api.guangsuapi.com/api.php/provide/vod/from/gsm3u8",
+   "api": "https://ckzy.me/api.php/provide/vod",
    "searchable": 1,
    "quickSearch": 1,
    "filterable": 1,
@@ -1073,9 +1073,9 @@
   },
   {
    "key": "caiji_3",
-   "name": "玉兔资源",
+   "name": "ikun资源",
    "type": 1,
-   "api": "https://apiyutu.com/api.php/provide/vod/",
+   "api": "https://ikunzyapi.com/api.php/provide/vod/from/ikm3u8/",
    "searchable": 1,
    "quickSearch": 1,
    "filterable": 1,
@@ -1084,9 +1084,9 @@
   },
   {
    "key": "caiji_4",
-   "name": "ikun资源",
+   "name": "魔都资源",
    "type": 1,
-   "api": "https://ikunzyapi.com/api.php/provide/vod/from/ikm3u8/",
+   "api": "https://caiji.moduapi.cc/api.php/provide/vod/at/json",
    "searchable": 1,
    "quickSearch": 1,
    "filterable": 1,
@@ -1106,9 +1106,9 @@
   },
   {
    "key": "caiji_6",
-   "name": "百花资源",
+   "name": "155资源",
    "type": 1,
-   "api": "https://bhziyuan.com/api.php/provide/vod/",
+   "api": "https://155api.com/api.php/provide/vod/",
    "searchable": 1,
    "quickSearch": 1,
    "filterable": 1,
@@ -1117,9 +1117,9 @@
   },
   {
    "key": "caiji_7",
-   "name": "魔都资源",
+   "name": "玉兔资源",
    "type": 1,
-   "api": "https://caiji.moduapi.cc/api.php/provide/vod/at/json",
+   "api": "https://apiyutu.com/api.php/provide/vod/",
    "searchable": 1,
    "quickSearch": 1,
    "filterable": 1,
@@ -1128,9 +1128,9 @@
   },
   {
    "key": "caiji_8",
-   "name": "155资源",
+   "name": "百花资源",
    "type": 1,
-   "api": "https://155api.com/api.php/provide/vod/",
+   "api": "https://bhziyuan.com/api.php/provide/vod/",
    "searchable": 1,
    "quickSearch": 1,
    "filterable": 1,
@@ -1260,6 +1260,17 @@
   },
   {
    "key": "caiji_20",
+   "name": "最大资源",
+   "type": 1,
+   "api": "https://zuida.xyz/api.php/provide/vod",
+   "searchable": 1,
+   "quickSearch": 1,
+   "filterable": 1,
+   "_src": "vod_api",
+   "_check": "fail"
+  },
+  {
+   "key": "caiji_21",
    "name": "金鹰资源",
    "type": 1,
    "api": "https://jinyingzy.com/api.php/provide/vod",
@@ -1270,7 +1281,7 @@
    "_check": "fail"
   },
   {
-   "key": "caiji_21",
+   "key": "caiji_22",
    "name": "速播资源(zy)",
    "type": 1,
    "api": "https://www.subozy.com/api.php/provide/vod",
@@ -1281,7 +1292,7 @@
    "_check": "fail"
   },
   {
-   "key": "caiji_22",
+   "key": "caiji_23",
    "name": "极速资源(js)",
    "type": 1,
    "api": "https://jszyapi.com/api.php/provide/vod",
@@ -1292,7 +1303,7 @@
    "_check": "fail"
   },
   {
-   "key": "caiji_23",
+   "key": "caiji_24",
    "name": "U酷资源",
    "type": 1,
    "api": "https://api.ukuapi88.com/api.php/provide/vod/",
@@ -1303,7 +1314,7 @@
    "_check": "fail"
   },
   {
-   "key": "caiji_24",
+   "key": "caiji_25",
    "name": "最大资源",
    "type": 1,
    "api": "https://api.zuidapi.com/api.php/provide/vod/",
@@ -1314,7 +1325,7 @@
    "_check": "fail"
   },
   {
-   "key": "caiji_25",
+   "key": "caiji_26",
    "name": "鸭鸭资源",
    "type": 1,
    "api": "https://cj.yayazy.net/api.php/provide/vod/",

@@ -2,18 +2,18 @@
  "sites": [
   {
    "key": "caiji_0",
-   "name": "光速资源",
+   "name": "CK资源",
    "type": 1,
-   "api": "https://api.guangsuapi.com/api.php/provide/vod/from/gsm3u8",
+   "api": "https://ckzy.me/api.php/provide/vod",
    "searchable": 1,
    "quickSearch": 1,
    "filterable": 1
   },
   {
    "key": "caiji_1",
-   "name": "CK资源",
+   "name": "光速资源",
    "type": 1,
-   "api": "https://ckzy.me/api.php/provide/vod",
+   "api": "https://api.guangsuapi.com/api.php/provide/vod/from/gsm3u8",
    "searchable": 1,
    "quickSearch": 1,
    "filterable": 1
@@ -29,33 +29,6 @@
   },
   {
    "key": "caiji_3",
-   "name": "百花资源",
-   "type": 1,
-   "api": "https://bhziyuan.com/api.php/provide/vod/",
-   "searchable": 1,
-   "quickSearch": 1,
-   "filterable": 1
-  },
-  {
-   "key": "caiji_4",
-   "name": "无水印资源",
-   "type": 1,
-   "api": "https://api.wsyzy.net/api.php/provide/vod",
-   "searchable": 1,
-   "quickSearch": 1,
-   "filterable": 1
-  },
-  {
-   "key": "caiji_5",
-   "name": "玉兔资源",
-   "type": 1,
-   "api": "https://apiyutu.com/api.php/provide/vod/",
-   "searchable": 1,
-   "quickSearch": 1,
-   "filterable": 1
-  },
-  {
-   "key": "caiji_6",
    "name": "ikun资源",
    "type": 1,
    "api": "https://ikunzyapi.com/api.php/provide/vod/from/ikm3u8/",
@@ -64,7 +37,16 @@
    "filterable": 1
   },
   {
-   "key": "caiji_7",
+   "key": "caiji_4",
+   "name": "百花资源",
+   "type": 1,
+   "api": "https://bhziyuan.com/api.php/provide/vod/",
+   "searchable": 1,
+   "quickSearch": 1,
+   "filterable": 1
+  },
+  {
+   "key": "caiji_5",
    "name": "魔都资源",
    "type": 1,
    "api": "https://caiji.moduapi.cc/api.php/provide/vod/at/json",
@@ -73,10 +55,28 @@
    "filterable": 1
   },
   {
-   "key": "caiji_8",
+   "key": "caiji_6",
+   "name": "无水印资源",
+   "type": 1,
+   "api": "https://api.wsyzy.net/api.php/provide/vod",
+   "searchable": 1,
+   "quickSearch": 1,
+   "filterable": 1
+  },
+  {
+   "key": "caiji_7",
    "name": "155资源",
    "type": 1,
    "api": "https://155api.com/api.php/provide/vod/",
+   "searchable": 1,
+   "quickSearch": 1,
+   "filterable": 1
+  },
+  {
+   "key": "caiji_8",
+   "name": "玉兔资源",
+   "type": 1,
+   "api": "https://apiyutu.com/api.php/provide/vod/",
    "searchable": 1,
    "quickSearch": 1,
    "filterable": 1
@@ -230,6 +230,15 @@
    "name": "最大资源",
    "type": 1,
    "api": "https://api.zuidapi.com/api.php/provide/vod/",
+   "searchable": 1,
+   "quickSearch": 1,
+   "filterable": 1
+  },
+  {
+   "key": "caiji_26",
+   "name": "鸭鸭资源",
+   "type": 1,
+   "api": "https://cj.yayazy.net/api.php/provide/vod/",
    "searchable": 1,
    "quickSearch": 1,
    "filterable": 1

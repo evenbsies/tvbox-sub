@@ -38,6 +38,15 @@
   },
   {
    "key": "caiji_4",
+   "name": "无水印资源",
+   "type": 1,
+   "api": "https://api.wsyzy.net/api.php/provide/vod",
+   "searchable": 1,
+   "quickSearch": 1,
+   "filterable": 1
+  },
+  {
+   "key": "caiji_5",
    "name": "155资源",
    "type": 1,
    "api": "https://155api.com/api.php/provide/vod/",
@@ -46,7 +55,7 @@
    "filterable": 1
   },
   {
-   "key": "caiji_5",
+   "key": "caiji_6",
    "name": "玉兔资源",
    "type": 1,
    "api": "https://apiyutu.com/api.php/provide/vod/",
@@ -55,19 +64,10 @@
    "filterable": 1
   },
   {
-   "key": "caiji_6",
+   "key": "caiji_7",
    "name": "百花资源",
    "type": 1,
    "api": "https://bhziyuan.com/api.php/provide/vod/",
-   "searchable": 1,
-   "quickSearch": 1,
-   "filterable": 1
-  },
-  {
-   "key": "caiji_7",
-   "name": "如意资源",
-   "type": 1,
-   "api": "https://cj.rycjapi.com/api.php/provide/vod/",
    "searchable": 1,
    "quickSearch": 1,
    "filterable": 1
@@ -200,6 +200,15 @@
   },
   {
    "key": "caiji_22",
+   "name": "如意资源",
+   "type": 1,
+   "api": "https://cj.rycjapi.com/api.php/provide/vod/",
+   "searchable": 1,
+   "quickSearch": 1,
+   "filterable": 1
+  },
+  {
+   "key": "caiji_23",
    "name": "U酷资源",
    "type": 1,
    "api": "https://api.ukuapi88.com/api.php/provide/vod/",
@@ -208,7 +217,7 @@
    "filterable": 1
   },
   {
-   "key": "caiji_23",
+   "key": "caiji_24",
    "name": "最大资源",
    "type": 1,
    "api": "https://api.zuidapi.com/api.php/provide/vod/",
@@ -217,7 +226,7 @@
    "filterable": 1
   },
   {
-   "key": "caiji_24",
+   "key": "caiji_25",
    "name": "鸭鸭资源",
    "type": 1,
    "api": "https://cj.yayazy.net/api.php/provide/vod/",
